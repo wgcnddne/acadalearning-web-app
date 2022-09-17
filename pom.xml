@@ -97,13 +97,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>ACADA Learning Releases Nexus Repository</name>
-	      <url>http://3.87.190.161:8081/repository/ecommerce-client-release/</url>
+	      <url>http://172.31.91.183:8081/repository/ecommerce-client-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>ACADA Learning Snapshot Nexus Repository </name>
-	      <url>http://3.87.190.161:8081/repository/ecommerce-client-snapshot/</url>
+	      <url>http://172.31.91.183:8081/repository/ecommerce-client-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
