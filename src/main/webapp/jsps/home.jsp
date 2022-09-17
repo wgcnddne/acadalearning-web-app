@@ -21,10 +21,7 @@
 	
 
 <% 
-String ip = "";
-InetAddress inetAddress = InetAddress.getLocalHost();
-ip = inetAddress.getHostAddress();
-out.println("Server Host Name :: "+inetAddress.getHostName()); 
+
 %>
 <br>
 
