@@ -1,0 +1,51 @@
+node(""){
+def mavenhome=tool name:"maven3.8.5"
+stage('1.Initiation'){
+sh "echo start of web-app application"
+}
+stage('2.GitClone'){
+sh "echo start of gitclone"
+git credentialsId: 'github-cred', url: 'https://github.com/wgcnddne/maven-web-app.git'
+}
+stage('3.Build'){
+sh "echo start of build"
+sh "${mavenhome}/bin/mvn package"
+}
+stage('4.CodeQuality'){
+sh "echo start of SonarQube analysis"
+sh "${mavenhome}/bin/mvn sonar:sonar"
+}
+stage('5.BackupArtifact'){
+sh "echo start of Nexus backup"
+sh "${mavenhome}/bin/mvn deploy"
+}
+stage('6.DeploytoStaging'){
+sh "echo start deployment to Tomcat"
+deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.27.114:8080/')], contextPath: null, war: 'target/*.war'
+}
+stage('7.Approval'){
+sh "echo need approval"
+timeout(time:5, unit:"DAYS"){
+input message:'Approval for UAT'
+}
+}
+stage('8.DeploytoUAT'){
+sh "echo start deployment to Tomcat"
+deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.27.114:8080/')], contextPath: null, war: 'target/*.war'
+}
+stage('9.Approval'){
+sh "echo need approval"
+timeout(time:3, unit:"DAYS"){
+input message:'Approval for Production'
+}
+}
+stage('10.DeploytoProduction'){
+sh "echo start deployment to Tomcat"
+deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://172.31.27.114:8080/')], contextPath: null, war: 'target/*.war'
+}
+//stage('11. EmailNotification'){
+//sh "start of email notification"
+//emailext body: 'Build Success', subject: 'Build Success', to: 'jenn@gmail.com'
+//}
+}
+
